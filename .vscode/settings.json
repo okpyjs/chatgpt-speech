@@ -1,0 +1,19 @@
+{
+    "restructuredtext.confPath": "${workspaceFolder}\\docs",
+    "python.defaultInterpreterPath": ".venv\\Scripts\\python.exe", //"C:\\Users\\ysdev1\\venv-genmark-cc\\Scripts\\python.exe",
+    "python.autoComplete.extraPaths": [
+        "."
+    ],
+    "python.analysis.extraPaths": [
+        "."
+    ],
+    "python.testing.unittestEnabled": false,
+    "python.testing.pytestEnabled": true,
+    "files.exclude": {
+        "**/.git": false,
+        "**/.svn": true,
+        "**/.hg": true,
+        "**/.DS_Store": true
+    },
+    "python.pythonPath": ".venv\\Scripts\\python.exe",
+}
