@@ -16,6 +16,7 @@ urlpatterns = [
     path("users/", include("parakeet.users.urls", namespace="users")),
     path("accounts/", include("allauth.urls")),
     path("quickstart/", include("quickstart.urls")),
+    path("api/", include("api.urls")),
     # Your stuff: custom urls includes go here
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
