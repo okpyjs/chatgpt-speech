@@ -278,3 +278,5 @@ parakeet/media/
 .ipython/
 .env
 .envs/*
+
+assets
