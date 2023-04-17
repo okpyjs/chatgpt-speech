@@ -45,4 +45,6 @@ class GPT:
         completion = openai.ChatCompletion.create(
             model=self.gpt_model, messages=self.messages
         )
-        return completion.choices[0].message.content
+        resp_message = completion.choices[0].message.content
+        self.messages.append({"role": "system", "content": resp_message})
+        return resp_message

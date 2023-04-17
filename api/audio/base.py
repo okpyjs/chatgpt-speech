@@ -16,7 +16,7 @@ class Audio:
         "Shiori": {"gender": "Femail", "shortName": "ja-JP-ShioriNeural"},
     }
 
-    def __init__(self, mode: str = "Nanami") -> None:
+    def __init__(self, token: uuid, mode: str = "Nanami") -> None:
         """
         mode: Nanami, Aoi, Daichi, Keita, Mayu, Naoki, Shiori
         """
@@ -31,6 +31,7 @@ class Audio:
             "X-Microsoft-OutputFormat": "riff-24khz-16bit-mono-pcm",
             "Authorization": f"Bearer {os.getenv('AUDIO_AUTH')}",
         }
+        self.token = token
 
     def azure(self, text: str):
         # text = text.encode('utf-8')
@@ -45,11 +46,11 @@ class Audio:
         )
 
         Path("assets/audio").mkdir(parents=True, exist_ok=True)
-        filename = f"assets/audio/{uuid.uuid4()}.mp3"
+        filename = f"assets/audio/{self.token}.mp3"
         with open(filename, mode="wb") as f:
             f.write(resp.content)
             f.close()
-        return filename
+        return True
 
 
 # Audio().azure("hello how are you?")
