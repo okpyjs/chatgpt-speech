@@ -38,13 +38,10 @@ class GPT:
     def __init__(self) -> None:
         self.gpt_model: str = "gpt-3.5-turbo"
         self.deep: int = 6
-        self.messages: list[str] = []
 
-    def turbo35(self, message: str):
-        self.messages.append({"role": "user", "content": message})
+    def turbo35(self, message: list[str]):
         completion = openai.ChatCompletion.create(
-            model=self.gpt_model, messages=self.messages
+            model=self.gpt_model, messages=message
         )
         resp_message = completion.choices[0].message.content
-        self.messages.append({"role": "system", "content": resp_message})
         return resp_message
