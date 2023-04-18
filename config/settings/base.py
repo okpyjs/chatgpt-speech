@@ -277,3 +277,5 @@ STATICFILES_FINDERS += ["compressor.finders.CompressorFinder"]
 
 # Your stuff...
 # ------------------------------------------------------------------------------
+
+MEDIA_ROOT = "assets/audio"
