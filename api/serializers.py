@@ -8,4 +8,4 @@ class ChatSerializer(serializers.Serializer):
 
 
 class AudioSerializer(serializers.Serializer):
-    audio_token = serializers.CharField()
+    token = serializers.CharField()

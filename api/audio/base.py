@@ -16,7 +16,7 @@ class Audio:
         "Shiori": {"gender": "Femail", "shortName": "ja-JP-ShioriNeural"},
     }
 
-    def __init__(self, token: uuid, mode: str = "Nanami") -> None:
+    def __init__(self, token: uuid = None, mode: str = "Nanami") -> None:
         """
         mode: Nanami, Aoi, Daichi, Keita, Mayu, Naoki, Shiori
         """
@@ -52,5 +52,11 @@ class Audio:
             f.close()
         return True
 
+    def audio_read(self, token: str):
+        with open(f"assets/audio/{token}.mp3", mode="rb") as f:
+            _byte = f.read()
+        print(_byte)
+        return _byte
 
-# Audio().azure("hello how are you?")
+
+# Audio('').audio_read("9a901ba4-0ef1-4fe7-b422-b933c44de679")
