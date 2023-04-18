@@ -8,10 +8,10 @@ from django.http import FileResponse
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from api.audio.base import *
-from api.ourai.base import *
+from api.audio.base import Audio
+from api.ourai.base import GPT
 
-from .serializers import *
+from .serializers import ChatSerializer
 
 
 class Base:
@@ -21,10 +21,12 @@ class Base:
 class ChatView(APIView):
     def post(self, request):
         serializer = ChatSerializer(data=request.data)
+        audio_token = uuid.uuid4()
         if serializer.is_valid():
             try:
                 user_message = json.loads(serializer.validated_data.get("user_message"))
                 audio_model = serializer.validated_data.get("audio_model")
+                chat_model = serializer.validated_data.get("chat_model")
                 system_message = json.loads(
                     serializer.validated_data.get("system_message")
                 )
@@ -34,22 +36,21 @@ class ChatView(APIView):
                     if i == len(user_message) - 1:
                         continue
                     joinMessage.append(system_message[i])
-                resp_message = GPT().turbo35(joinMessage)
+                resp_message = GPT(chat_model).turbo35(joinMessage)
             except:  # noqa
-                resp_message = "Server Error"
-            audio_token = uuid.uuid4()
+                resp_message = "現在のGPTモデルはご利用いただけません。"
             try:
                 Base.audio_thread = threading.Thread(
                     target=Audio(audio_token, audio_model).azure, args=(resp_message,)
                 )
                 Base.audio_thread.start()
-            except:
+            except:  # noqa
                 pass
-            data = {"message": resp_message, "audioToken": audio_token}
-            return Response(data)
         else:
             # return Response(serializer.errors, status=400)
-            return Response({"message": "Server error", "audioToken": "error"})
+            resp_message = "現在のGPTモデルはご利用いただけません。"
+        data = {"message": resp_message, "audioToken": audio_token}
+        return Response(data)
 
 
 class AudioView(APIView):
