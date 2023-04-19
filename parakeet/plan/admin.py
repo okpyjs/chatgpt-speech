@@ -1,0 +1,35 @@
+from django.contrib import admin
+from plan.models import GPT, Audio, PayUnit, Plan, PlanSettingAudio, PlanSettingGpt
+
+
+# Register your models here.
+class AudioAdmin(admin.ModelAdmin):
+    pass
+
+
+class GPTAdmin(admin.ModelAdmin):
+    pass
+
+
+class PlanAdmin(admin.ModelAdmin):
+    pass
+
+
+class PlanSettingAudioAdmin(admin.ModelAdmin):
+    pass
+
+
+class PlanSettingGptAdmin(admin.ModelAdmin):
+    pass
+
+
+class PayUnitAdmin(admin.ModelAdmin):
+    pass
+
+
+admin.site.register(Audio, AudioAdmin)
+admin.site.register(GPT, GPTAdmin)
+admin.site.register(Plan, PlanAdmin)
+admin.site.register(PlanSettingAudio, PlanSettingAudioAdmin)
+admin.site.register(PlanSettingGpt, PlanSettingGptAdmin)
+admin.site.register(PayUnit, PayUnitAdmin)

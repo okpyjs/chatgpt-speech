@@ -75,7 +75,7 @@ THIRD_PARTY_APPS = [
 
 LOCAL_APPS = [
     "parakeet.users",
-    "parakeet.gpt_audio_model",
+    "parakeet.plan",
     "quickstart",
     "api",
     # Your stuff: custom apps go here
