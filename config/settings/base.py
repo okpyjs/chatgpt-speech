@@ -75,8 +75,9 @@ THIRD_PARTY_APPS = [
 
 LOCAL_APPS = [
     "parakeet.users",
+    "parakeet.gpt_audio_model",
     "quickstart",
-    "api"
+    "api",
     # Your stuff: custom apps go here
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
