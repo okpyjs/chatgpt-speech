@@ -27,11 +27,11 @@ class Audio(models.Model):
 
 
 class Currency(models.Model):
-    unit_name = models.CharField(default="¥", max_length=10)
-    unit_description = models.TextField(default="日本")
+    symbol = models.CharField(default="¥", max_length=10)
+    currency_description = models.TextField(default="日本")
 
     def __str__(self) -> str:
-        return f"{self.unit_name} - {self.unit_description}"
+        return f"{self.symbol} - {self.currency_description}"
 
 
 class Plan(models.Model):
