@@ -26,7 +26,7 @@ class Audio(models.Model):
         return self.model_name
 
 
-class PayUnit(models.Model):
+class Currency(models.Model):
     unit_name = models.CharField(default="¥", max_length=10)
     unit_description = models.TextField(default="日本")
 
@@ -37,7 +37,7 @@ class PayUnit(models.Model):
 class Plan(models.Model):
     plan_name = models.CharField(max_length=30)
     plan_price = models.FloatField()
-    unit = models.ForeignKey(PayUnit, on_delete=models.DO_NOTHING)
+    unit = models.ForeignKey(Currency, on_delete=models.DO_NOTHING)
     request_no_per_day = models.IntegerField()
     plan_description = models.TextField(default="No description")
 

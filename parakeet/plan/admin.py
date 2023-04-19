@@ -1,5 +1,5 @@
 from django.contrib import admin
-from plan.models import GPT, Audio, PayUnit, Plan, PlanSettingAudio, PlanSettingGpt
+from plan.models import GPT, Audio, Currency, Plan, PlanSettingAudio, PlanSettingGpt
 
 
 # Register your models here.
@@ -32,4 +32,4 @@ admin.site.register(GPT, GPTAdmin)
 admin.site.register(Plan, PlanAdmin)
 admin.site.register(PlanSettingAudio, PlanSettingAudioAdmin)
 admin.site.register(PlanSettingGpt, PlanSettingGptAdmin)
-admin.site.register(PayUnit, PayUnitAdmin)
+admin.site.register(Currency, PayUnitAdmin)
