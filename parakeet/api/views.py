@@ -3,13 +3,12 @@ import os
 import threading
 import uuid
 
+from api.audio.base import Audio
+from api.ourai.base import GPT
 from django.conf import settings
 from django.http import FileResponse
 from rest_framework.response import Response
 from rest_framework.views import APIView
-
-from api.audio.base import Audio
-from api.ourai.base import GPT
 
 from .serializers import ChatSerializer
 

@@ -77,7 +77,7 @@ LOCAL_APPS = [
     "parakeet.users",
     "parakeet.plan",
     "quickstart",
-    "api",
+    "parakeet.api",
     # Your stuff: custom apps go here
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
