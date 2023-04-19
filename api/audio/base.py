@@ -8,12 +8,12 @@ import requests
 class Audio:
     audio_mode_dict = {
         "Nanami": {"gender": "Female", "shortName": "ja-JP-NanamiNeural"},
-        "Aoi": {"gender": "Femail", "shortName": "ja-JP-AoiNeural"},
+        "Aoi": {"gender": "Female", "shortName": "ja-JP-AoiNeural"},
         "Daichi": {"gender": "Male", "shortName": "ja-JP-DaichiNeural"},
         "Keita": {"gender": "Male", "shortName": "ja-JP-KeitaNeural"},
         "Mayu": {"gender": "Female", "shortName": "ja-JP-MayuNeural"},
         "Naoki": {"gender": "Mail", "shortName": "ja-JP-NaokiNeural"},
-        "Shiori": {"gender": "Femail", "shortName": "ja-JP-ShioriNeural"},
+        "Shiori": {"gender": "Female", "shortName": "ja-JP-ShioriNeural"},
     }
 
     def __init__(self, token: uuid = None, mode: str = "Nanami") -> None:

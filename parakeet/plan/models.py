@@ -4,7 +4,7 @@ from django.db import models
 # Create your models here.
 class GPT(models.Model):
     model_name = models.CharField(max_length=30)
-    model_description = models.TextField()
+    model_description = models.TextField(default="No description")
 
     class Meta:
         verbose_name = "GPT Model"
@@ -15,7 +15,9 @@ class GPT(models.Model):
 
 class Audio(models.Model):
     model_name = models.CharField(max_length=30)
-    model_description = models.TextField()
+    gender = models.CharField(max_length=30, default="Male")
+    short_name = models.CharField(max_length=100, default="Null")
+    model_description = models.TextField(default="No description")
 
     class Meta:
         verbose_name = "Audio Model"
@@ -29,7 +31,7 @@ class PayUnit(models.Model):
     unit_description = models.TextField(default="日本")
 
     def __str__(self) -> str:
-        return self.unit_description
+        return f"{self.unit_name} - {self.unit_description}"
 
 
 class Plan(models.Model):
