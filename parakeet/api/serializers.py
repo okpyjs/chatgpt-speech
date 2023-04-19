@@ -11,3 +11,13 @@ class ChatSerializer(serializers.Serializer):
 
 class AudioSerializer(serializers.Serializer):
     token = serializers.CharField()
+
+
+class LoginSerializer(serializers.Serializer):
+    user_id = serializers.IntegerField()
+    user_name = serializers.CharField()
+    password = serializers.CharField()
+
+
+class SignSerializer(serializers.Serializer):
+    pass

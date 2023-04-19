@@ -12,12 +12,16 @@ from rest_framework.views import APIView
 
 from .serializers import ChatSerializer
 
+# from parakeet.api.authenticate import jwt_authentication_required
+
 
 class Base:
     audio_thread = None
 
 
 class ChatView(APIView):
+    # dispatch = jwt_authentication_required(APIView.dispatch)
+
     def post(self, request):
         serializer = ChatSerializer(data=request.data)
         audio_token = uuid.uuid4()
@@ -62,3 +66,13 @@ class AudioView(APIView):
 
         except:  # noqa
             return Response("not valid audio token", status=400)
+
+
+class LoginView(APIView):
+    def post(self, request):
+        pass
+
+
+class SignView(APIView):
+    def post():
+        pass
