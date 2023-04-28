@@ -74,11 +74,12 @@ THIRD_PARTY_APPS = [
 ]
 
 LOCAL_APPS = [
-    "parakeet.users",
+    # "parakeet.users",
     "parakeet.plan",
     "quickstart",
     "parakeet.api",
     "parakeet.acc",
+    "parakeet.customuser"
     # Your stuff: custom apps go here
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
@@ -281,3 +282,5 @@ STATICFILES_FINDERS += ["compressor.finders.CompressorFinder"]
 # ------------------------------------------------------------------------------
 
 MEDIA_ROOT = "assets/audio"
+
+AUTH_USER_MODEL = "customuser.User"
