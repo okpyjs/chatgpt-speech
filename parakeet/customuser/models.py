@@ -1,8 +1,11 @@
 from django.contrib.auth.models import (
     AbstractBaseUser,
     BaseUserManager,
+    Group,
+    Permission,
     PermissionsMixin,
 )
+from django.contrib.contenttypes.models import ContentType
 from django.db import models
 from plan.models import Plan
 
@@ -15,6 +18,13 @@ class UserManager(BaseUserManager):
         user = self.model(email=email, **extra_fields)
         user.set_password(password)
         user.save(using=self._db)
+
+        user = User.objects.get(email=email)
+        user.user_permissions.clear()
+        # permission = Permission.objects.get(codename='view_permission')
+        # user.user_permissions.add(permission)
+        user.save(using=self._db)
+
         return user
 
     def create_superuser(self, email, password=None, **extra_fields):

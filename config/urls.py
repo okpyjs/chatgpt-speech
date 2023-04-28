@@ -17,6 +17,7 @@ urlpatterns = [
     path("accounts/", include("allauth.urls")),
     path("quickstart/", include("quickstart.urls")),
     path("api/", include("api.urls")),
+    path("customuser/", include("customuser.urls"))
     # Your stuff: custom urls includes go here
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

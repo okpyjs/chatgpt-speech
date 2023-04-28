@@ -1,7 +1,8 @@
+from customuser.views import UserRegistrationView
 from django.urls import path
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
-from .views import *
+from .views import AudioView, ChatView
 
 urlpatterns = [
     path("chat/", ChatView.as_view(), name="mydata-view"),
