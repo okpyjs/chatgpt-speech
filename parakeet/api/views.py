@@ -7,8 +7,11 @@ from api.audio.base import Audio
 from api.ourai.base import GPT
 from django.conf import settings
 from django.http import FileResponse
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from rest_framework_simplejwt.views import TokenObtainPairView
 
 from .serializers import ChatSerializer
 
@@ -21,6 +24,7 @@ class Base:
 
 class ChatView(APIView):
     # dispatch = jwt_authentication_required(APIView.dispatch)
+    permission_classes = (IsAuthenticated,)
 
     def post(self, request):
         serializer = ChatSerializer(data=request.data)
@@ -76,3 +80,16 @@ class LoginView(APIView):
 class SignView(APIView):
     def post():
         pass
+
+
+class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
+    def validate(self, attrs):
+        data = super().validate(attrs)
+        refresh = self.get_token(self.user)
+        data["refresh"] = str(refresh)
+        data["access"] = str(refresh.access_token)
+        return data
+
+
+class CustomTokenObtainPairView(TokenObtainPairView):
+    serializer_class = CustomTokenObtainPairSerializer
