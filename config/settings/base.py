@@ -78,7 +78,6 @@ LOCAL_APPS = [
     "parakeet.plan",
     "quickstart",
     "parakeet.api",
-    "parakeet.acc",
     "parakeet.customuser"
     # Your stuff: custom apps go here
 ]

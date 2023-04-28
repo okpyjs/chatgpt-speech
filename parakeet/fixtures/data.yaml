@@ -1,0 +1,19 @@
+- model: plan.Currency
+  pk: 1
+  fields:
+    symbol: ¥
+    currency_description: 日本
+
+- model: plan.Currency
+  pk: 2
+  fields:
+    symbol: $
+    currency_description: USD
+
+- model: plan.Plan
+  fields:
+    plan_name: free
+    plan_price: 0
+    unit: 1
+    request_no_per_day: 5
+    plan_description: "No description"
