@@ -1,14 +1,16 @@
 - model: plan.Currency
+  pk: 1
   fields:
     symbol: ¥
     currency_description: 日本
 
 - model: plan.Currency
+  pk: 2
   fields:
     symbol: $
     currency_description: USD
 
-- model: app2.book
+- model: plan.Plan
   fields:
     plan_name: free
     plan_price: 0
