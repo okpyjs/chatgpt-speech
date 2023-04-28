@@ -43,14 +43,14 @@ class UserManager(BaseUserManager):
 
 class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(unique=True)
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=255, blank=True)
     plan_id = models.ForeignKey(Plan, on_delete=models.DO_NOTHING)
-    gender = models.CharField(max_length=30)
-    family_name = models.CharField(max_length=100)
-    given_name = models.CharField(max_length=100)
+    gender = models.CharField(max_length=30, blank=True)
+    family_name = models.CharField(max_length=100, blank=True)
+    given_name = models.CharField(max_length=100, blank=True)
     mail_verified = models.BooleanField(default=False)
-    phone = models.CharField(max_length=30)
-    address = models.CharField(max_length=300)
+    phone = models.CharField(max_length=30, blank=True)
+    address = models.CharField(max_length=300, blank=True)
 
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)

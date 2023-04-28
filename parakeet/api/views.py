@@ -7,7 +7,7 @@ from api.audio.base import Audio
 from api.ourai.base import GPT
 from django.conf import settings
 from django.http import FileResponse
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
@@ -61,6 +61,9 @@ class ChatView(APIView):
 
 
 class AudioView(APIView):
+    permission_classes = (AllowAny,)
+    authentication_classes = ()
+
     def get(self, request):
         try:
             token = request.query_params["token"]
@@ -70,16 +73,6 @@ class AudioView(APIView):
 
         except:  # noqa
             return Response("not valid audio token", status=400)
-
-
-class LoginView(APIView):
-    def post(self, request):
-        pass
-
-
-class SignView(APIView):
-    def post():
-        pass
 
 
 class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
