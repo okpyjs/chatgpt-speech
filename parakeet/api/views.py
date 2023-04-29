@@ -123,7 +123,7 @@ class ChatView(APIView):
                             [
                                 {
                                     "role": "user",
-                                    "content": f"I want you to support me about category: {category}, title: {title} in Japanese",
+                                    "content": f"I want you to support me about category: {category}, title: {title}",
                                 }
                             ]
                             + join_message
