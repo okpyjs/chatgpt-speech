@@ -14,13 +14,10 @@ from rest_framework.views import APIView
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 
+from .base import Base
 from .serializers import ChatSerializer, MailVerifySerializer
 
 # from parakeet.api.authenticate import jwt_authentication_required
-
-
-class Base:
-    audio_thread = None
 
 
 class ChatView(APIView):
@@ -71,10 +68,17 @@ class MailVerify(APIView):
             try:
                 email = serializer.validated_data.get("email")
                 code = serializer.validated_data.get("code")
-                user = User.objects.get(email=email)
+                # user = User.objects.get(email=email)
+                user = 1
                 if user is not None:
-                    print(code)
-                    return Response({"data": "mail verified"})
+                    verify_code_list = Base.mail_verify_code
+                    if email in [x["mail"] for x in verify_code_list]:
+                        if int(code) in [x["code"] for x in verify_code_list]:
+                            return Response({"data": "mail verified"}, status=200)
+                        else:
+                            return Response({"data": "code error"}, status=401)
+                    else:
+                        return Response({"data": "time exceed"}, status=400)
                 else:
                     return Response({"data": "not registered user"}, status=401)
             except:

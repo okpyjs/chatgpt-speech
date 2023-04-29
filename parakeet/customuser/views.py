@@ -42,15 +42,21 @@ class UserRegistrationView(APIView):
                 "isTransactional": True,
             }
 
-            response = requests.post(
-                "https://api.elasticemail.com/v2/email/send",
-                data=email_params,
-            )
+            # response = requests.post(
+            #     "https://api.elasticemail.com/v2/email/send",
+            #     data=email_params,
+            # )
 
-            if response.status_code == 200:
-                return Response({"data": "sent"}, status=status.HTTP_201_CREATED)
-            else:
-                return Response({"data": "error sending mail"}, status=500)
+            # if response.status_code == 200:
+            #     return Response({"data": "created account and sent verify code to your mail"}, status=status.HTTP_201_CREATED)
+            print(random_num)
+            return Response(
+                {"data": "created account and sent verify code to your mail"},
+                status=status.HTTP_201_CREATED,
+            )
+            # else:
+            #     return Response({"data": "error sending mail"}, status=500)
+
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
