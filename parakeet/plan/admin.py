@@ -1,5 +1,14 @@
 from django.contrib import admin
-from plan.models import GPT, Audio, Currency, Plan, PlanSettingAudio, PlanSettingGpt
+from plan.models import (
+    GPT,
+    QA,
+    Audio,
+    Currency,
+    Plan,
+    PlanSettingAudio,
+    PlanSettingGpt,
+    QaCategory,
+)
 
 
 # Register your models here.
@@ -27,9 +36,19 @@ class PayUnitAdmin(admin.ModelAdmin):
     pass
 
 
+class QAAdmin(admin.ModelAdmin):
+    pass
+
+
+class QaCategoryAdmin(admin.ModelAdmin):
+    pass
+
+
 admin.site.register(Audio, AudioAdmin)
 admin.site.register(GPT, GPTAdmin)
 admin.site.register(Plan, PlanAdmin)
 admin.site.register(PlanSettingAudio, PlanSettingAudioAdmin)
 admin.site.register(PlanSettingGpt, PlanSettingGptAdmin)
 admin.site.register(Currency, PayUnitAdmin)
+admin.site.register(QA, QAAdmin)
+admin.site.register(QaCategory, QaCategoryAdmin)

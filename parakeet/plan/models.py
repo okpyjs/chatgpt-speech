@@ -59,3 +59,27 @@ class PlanSettingAudio(models.Model):
 
     def __str__(self) -> str:
         return f"{self.plan_id} -> Audio Model({self.model_id})"
+
+
+class QaCategory(models.Model):
+    first_category = models.CharField(max_length=100)
+    second_category = models.CharField(max_length=100)
+
+    def __str__(self) -> str:
+        return f"{self.first_category} - {self.second_category}"
+
+    class Meta:
+        verbose_name = "Question Categorie"
+
+
+class QA(models.Model):
+    category_id = models.ForeignKey(QaCategory, on_delete=models.CASCADE)
+    question = models.TextField()
+    answer = models.TextField()
+    audio_path = models.CharField(max_length=100)
+
+    def __str__(self) -> str:
+        return f"{self.category_id} - {self.question}"
+
+    class Meta:
+        verbose_name = "Questions and Answer"
