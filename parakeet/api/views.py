@@ -82,7 +82,7 @@ class MailVerify(APIView):
                 else:
                     return Response({"data": "not registered user"}, status=401)
             except:
-                return Response(serializer.errors, status=400)
+                return Response({"data": "server error"}, status=500)
 
         else:
             return Response(serializer.errors, status=400)
