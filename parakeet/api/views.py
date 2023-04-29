@@ -1,5 +1,7 @@
 import json
 import os
+import random
+import re
 import threading
 import uuid
 
@@ -8,6 +10,7 @@ from api.ourai.base import GPT
 from customuser.models import User
 from django.conf import settings
 from django.http import FileResponse
+from plan.models import QA, QaCategory
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -20,40 +23,140 @@ from .serializers import ChatSerializer, MailVerifySerializer
 # from parakeet.api.authenticate import jwt_authentication_required
 
 
+def get_title(chat_model, msg_list, audio_token, que, content):
+    msg_list.append(
+        {
+            "role": "user",
+            "content": "give me category and title of this conversation in English",
+        }
+    )
+    resp_message = GPT(chat_model).send_req(msg_list)
+    resp_message = resp_message.replace("\n", "")
+    try:
+        category = re.findall(
+            r"category:(.+)title", resp_message, re.IGNORECASE | re.MULTILINE
+        )[0].strip()
+    except:  # noqa
+        category = "None"
+    try:
+        title = re.findall(r"title:(.+)", resp_message, re.IGNORECASE | re.MULTILINE)[
+            0
+        ].strip()
+    except:  # noqa
+        title = "None"
+    Base.chat_title = title
+    Base.chat_category = category
+    # filter title and category
+    # try:
+    catg = QaCategory.objects.filter(first_category=category)
+    if not catg:  # noqa
+        catg = [
+            QaCategory.objects.create(second_category=title, first_category=category)
+        ]
+
+    QA.objects.create(
+        category_id=catg[0], question=que, answer=content, audio_path=audio_token
+    )
+
+    return
+
+
 class ChatView(APIView):
     # dispatch = jwt_authentication_required(APIView.dispatch)
     permission_classes = (IsAuthenticated,)
 
     def post(self, request):
         serializer = ChatSerializer(data=request.data)
-        audio_token = uuid.uuid4()
         if serializer.is_valid():
+            audio_token = uuid.uuid4()
             try:
                 user_message = json.loads(serializer.validated_data.get("user_message"))
                 audio_model = serializer.validated_data.get("audio_model")
                 chat_model = serializer.validated_data.get("chat_model")
+                first_chat = serializer.validated_data.get("first_chat")
                 system_message = json.loads(
                     serializer.validated_data.get("system_message")
                 )
-                joinMessage = []
+                join_message = []
                 for i, msg in enumerate(user_message):
-                    joinMessage.append(msg)
+                    join_message.append(msg)
                     if i == len(user_message) - 1:
                         continue
-                    joinMessage.append(system_message[i])
-                resp_message = GPT(chat_model).turbo35(joinMessage)
+                    join_message.append(system_message[i])
+                # QaCategory.objects.get(second_category=)
+                if first_chat:
+                    resp_message = GPT(chat_model).send_req(join_message)
+                    join_message.append({"role": "system", "content": resp_message})
+                    try:
+                        Base.audio_thread = threading.Thread(
+                            target=Audio(audio_token, audio_model).azure,
+                            args=(resp_message,),
+                        )
+                        Base.audio_thread.start()
+                        Base.chat_title_thread = threading.Thread(
+                            target=get_title,
+                            args=(
+                                chat_model,
+                                join_message,
+                                audio_token,
+                                user_message[-1]["content"],
+                                resp_message,
+                            ),
+                        )
+                        Base.chat_title_thread.start()
+                    except:  # noqa
+                        pass
+                else:
+                    if Base.chat_title_thread is not None:
+                        Base.chat_title_thread.join()
+                        Base.chat_title_thread = None
+                    category = Base.chat_category
+                    title = Base.chat_title
+                    qa = QA.objects.filter(question=user_message[-1]["content"])
+                    if len(qa) >= 5:
+                        # check category missing !!!!!!!!!
+                        rn = random.randint(0, len(qa) - 1)
+                        resp_message = qa[rn].answer
+                        audio_token = qa[rn].audio_path
+                    else:
+                        resp_message = GPT(chat_model).send_req(
+                            [
+                                {
+                                    "role": "user",
+                                    "content": f"I want you to support me about category: {category}, title: {title} in Japanese",
+                                }
+                            ]
+                            + join_message
+                        )
+                        try:
+                            Base.audio_thread = threading.Thread(
+                                target=Audio(audio_token, audio_model).azure,
+                                args=(resp_message,),
+                            )
+                            Base.audio_thread.start()
+                        except:  # noqa
+                            pass
+                        # create new and save
+                        # catg = QaCategory.objects.create(first_category=category, second_category=title)
+                        catg = QaCategory.objects.filter(first_category=category)
+                        QA.objects.create(
+                            category_id=catg[0],
+                            question=user_message[-1]["content"],
+                            answer=resp_message,
+                            audio_path=audio_token,
+                        )
+                    # check category and message
+                    # check database
             except:  # noqa
-                resp_message = "現在のGPTモデルはご利用いただけません。"
-            try:
-                Base.audio_thread = threading.Thread(
-                    target=Audio(audio_token, audio_model).azure, args=(resp_message,)
+                return Response(
+                    {"message": "現在のGPTモデルはご利用いただけません。", "audioToken": "error"},
+                    status=500,
                 )
-                Base.audio_thread.start()
-            except:  # noqa
-                pass
         else:
+            return Response(
+                {"message": "現在のGPTモデルはご利用いただけません。", "audioToken": "error"}, status=400
+            )
             # return Response(serializer.errors, status=400)
-            resp_message = "現在のGPTモデルはご利用いただけません。"
         data = {"message": resp_message, "audioToken": audio_token}
         return Response(data)
 

@@ -6,6 +6,7 @@ class ChatSerializer(serializers.Serializer):
     audio_model = serializers.CharField()
     chat_model = serializers.CharField()
     system_message = serializers.CharField()
+    first_chat = serializers.BooleanField()
     # age = serializers.IntegerField()
 
 

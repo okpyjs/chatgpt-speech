@@ -62,14 +62,14 @@ class PlanSettingAudio(models.Model):
 
 
 class QaCategory(models.Model):
-    first_category = models.CharField(max_length=100)
+    first_category = models.CharField(max_length=100, blank=True)
     second_category = models.CharField(max_length=100)
 
     def __str__(self) -> str:
         return f"{self.first_category} - {self.second_category}"
 
     class Meta:
-        verbose_name = "Question Categorie"
+        verbose_name = "Question Category"
 
 
 class QA(models.Model):
