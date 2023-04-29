@@ -9,6 +9,12 @@ class ChatSerializer(serializers.Serializer):
     # age = serializers.IntegerField()
 
 
+class MailVerifySerializer(serializers.Serializer):
+    email = serializers.CharField()
+    code = serializers.CharField()
+    # age = serializers.IntegerField()
+
+
 class AudioSerializer(serializers.Serializer):
     token = serializers.CharField()
 

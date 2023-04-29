@@ -5,6 +5,7 @@ import uuid
 
 from api.audio.base import Audio
 from api.ourai.base import GPT
+from customuser.models import User
 from django.conf import settings
 from django.http import FileResponse
 from rest_framework.permissions import AllowAny, IsAuthenticated
@@ -13,7 +14,7 @@ from rest_framework.views import APIView
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 
-from .serializers import ChatSerializer
+from .serializers import ChatSerializer, MailVerifySerializer
 
 # from parakeet.api.authenticate import jwt_authentication_required
 
@@ -58,6 +59,29 @@ class ChatView(APIView):
             resp_message = "現在のGPTモデルはご利用いただけません。"
         data = {"message": resp_message, "audioToken": audio_token}
         return Response(data)
+
+
+class MailVerify(APIView):
+    permission_classes = (AllowAny,)
+    authentication_classes = ()
+
+    def post(self, request):
+        serializer = MailVerifySerializer(data=request.data)
+        if serializer.is_valid():
+            try:
+                email = serializer.validated_data.get("email")
+                code = serializer.validated_data.get("code")
+                user = User.objects.get(email=email)
+                if user is not None:
+                    print(code)
+                    return Response({"data": "mail verified"})
+                else:
+                    return Response({"data": "not registered user"}, status=401)
+            except:
+                return Response(serializer.errors, status=400)
+
+        else:
+            return Response(serializer.errors, status=400)
 
 
 class AudioView(APIView):
