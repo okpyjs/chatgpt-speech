@@ -5,7 +5,10 @@
 .gitlab-ci.yml
 .idea
 .pre-commit-config.yaml
+setup.cfg
+ref.md
 .readthedocs.yml
 .travis.yml
 venv
+.venv
 .git

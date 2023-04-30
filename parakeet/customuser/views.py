@@ -4,10 +4,10 @@ import time
 
 import requests
 from api.base import Base
-# from plan.models import Plan
-# from customuser.models import User
+from customuser.models import User
 from customuser.serializers import UserSerializer
 from django.contrib.auth import authenticate, login
+from plan.models import Plan
 from rest_framework import status
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
@@ -24,9 +24,9 @@ class UserRegistrationView(APIView):
 
     def post(self, request):
         serializer = self.serializer_class(data=request.data)
-        # plan = Plan.objects.all()
+        plan = Plan.objects.all()
         if serializer.is_valid():
-            # User.objects.create_user(plan_id=plan[0], **serializer.validated_data)
+            User.objects.create_user(plan_id=plan[0], **serializer.validated_data)
             random_num = random.randint(100000, 999999)
             email = serializer.validated_data.get("email")
             Base.mail_verify_code.append(

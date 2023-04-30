@@ -30,6 +30,7 @@ class UserManager(BaseUserManager):
     def create_superuser(self, email, password=None, **extra_fields):
         extra_fields.setdefault("is_staff", True)
         extra_fields.setdefault("is_superuser", True)
+        extra_fields.setdefault("mail_verified", True)
         plan = Plan.objects.all()
         extra_fields.setdefault("plan_id", plan[0])
 

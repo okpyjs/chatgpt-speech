@@ -171,8 +171,8 @@ class MailVerify(APIView):
             try:
                 email = serializer.validated_data.get("email")
                 code = serializer.validated_data.get("code")
-                # user = User.objects.get(email=email)
-                user = 1
+                user = User.objects.filter(email=email)
+                # user = 1
                 if user is not None:
                     verify_code_list = Base.mail_verify_code
                     if email in [x["mail"] for x in verify_code_list]:

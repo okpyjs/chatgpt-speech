@@ -1,0 +1,8 @@
+
+- model: plan.Plan
+  fields:
+    plan_name: free
+    plan_price: 0
+    unit: 1
+    request_no_per_day: 5
+    plan_description: "No description"
