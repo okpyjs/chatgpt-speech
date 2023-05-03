@@ -84,34 +84,34 @@ class ChatView(APIView):
                         continue
                     join_message.append(system_message[i])
                 # QaCategory.objects.get(second_category=)
-                if first_chat:
-                    resp_message = GPT(chat_model).send_req(join_message)
-                    join_message.append({"role": "system", "content": resp_message})
-                    try:
-                        Base.audio_thread = threading.Thread(
-                            target=Audio(audio_token, audio_model).azure,
-                            args=(resp_message,),
-                        )
-                        Base.audio_thread.start()
-                        Base.chat_title_thread = threading.Thread(
-                            target=get_title,
-                            args=(
-                                chat_model,
-                                join_message,
-                                audio_token,
-                                user_message[-1]["content"],
-                                resp_message,
-                            ),
-                        )
-                        Base.chat_title_thread.start()
-                    except:  # noqa
-                        pass
-                else:
-                    if Base.chat_title_thread is not None:
-                        Base.chat_title_thread.join()
-                        Base.chat_title_thread = None
-                    category = Base.chat_category
-                    title = Base.chat_title
+                if True:
+                    #     resp_message = GPT(chat_model).send_req(join_message)
+                    #     join_message.append({"role": "system", "content": resp_message})
+                    #     try:
+                    #         Base.audio_thread = threading.Thread(
+                    #             target=Audio(audio_token, audio_model).azure,
+                    #             args=(resp_message,),
+                    #         )
+                    #         Base.audio_thread.start()
+                    #         Base.chat_title_thread = threading.Thread(
+                    #             target=get_title,
+                    #             args=(
+                    #                 chat_model,
+                    #                 join_message,
+                    #                 audio_token,
+                    #                 user_message[-1]["content"],
+                    #                 resp_message,
+                    #             ),
+                    #         )
+                    #         Base.chat_title_thread.start()
+                    #     except:  # noqa
+                    #         pass
+                    # else:
+                    # if Base.chat_title_thread is not None:
+                    #     Base.chat_title_thread.join()
+                    #     Base.chat_title_thread = None
+                    # category = Base.chat_category
+                    # title = Base.chat_title
                     qa = QA.objects.filter(question=user_message[-1]["content"])
                     if len(qa) >= 5:
                         # check category missing !!!!!!!!!
@@ -119,15 +119,7 @@ class ChatView(APIView):
                         resp_message = qa[rn].answer
                         audio_token = qa[rn].audio_path
                     else:
-                        resp_message = GPT(chat_model).send_req(
-                            [
-                                {
-                                    "role": "user",
-                                    "content": f"I want you to support me about category: {category}, title: {title}",
-                                }
-                            ]
-                            + join_message
-                        )
+                        resp_message = GPT(chat_model).send_req(join_message)
                         try:
                             Base.audio_thread = threading.Thread(
                                 target=Audio(audio_token, audio_model).azure,
@@ -138,13 +130,13 @@ class ChatView(APIView):
                             pass
                         # create new and save
                         # catg = QaCategory.objects.create(first_category=category, second_category=title)
-                        catg = QaCategory.objects.filter(first_category=category)
-                        QA.objects.create(
-                            category_id=catg[0],
-                            question=user_message[-1]["content"],
-                            answer=resp_message,
-                            audio_path=audio_token,
-                        )
+                        # catg = QaCategory.objects.filter(first_category=category)
+                        # QA.objects.create(
+                        #     category_id=catg[0],
+                        #     question=user_message[-1]["content"],
+                        #     answer=resp_message,
+                        #     audio_path=audio_token,
+                        # )
                     # check category and message
                     # check database
             except:  # noqa
