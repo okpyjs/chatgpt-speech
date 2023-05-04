@@ -5,6 +5,7 @@ import re
 import threading
 import uuid
 
+import stripe
 from api.audio.base import Audio
 from api.ourai.base import GPT
 from customuser.models import User
@@ -79,10 +80,9 @@ class ChatView(APIView):
                 )
                 join_message = []
                 for i, msg in enumerate(user_message):
+                    if len(system_message) > i:
+                        join_message.append(system_message[i])
                     join_message.append(msg)
-                    if i == len(user_message) - 1:
-                        continue
-                    join_message.append(system_message[i])
                 # QaCategory.objects.get(second_category=)
                 if True:
                     #     resp_message = GPT(chat_model).send_req(join_message)
@@ -209,3 +209,26 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
 
 class CustomTokenObtainPairView(TokenObtainPairView):
     serializer_class = CustomTokenObtainPairSerializer
+
+
+class StripeInvoce:
+    permission_classes = (IsAuthenticated,)
+
+    def post(self, request):
+        STRIPE_SECRET_KEY = os.getenv("STRIPE_SECRET_KEY")
+        stripe.api_key = STRIPE_SECRET_KEY
+        customer = stripe.Customer.create(
+            email="maiermarc75@gmail.com",
+            name="Marc Maier",
+            description="Customer description",
+        )
+        customer_id = customer.id
+        invoice = stripe.Invoice.create(
+            customer=customer_id,
+            description="Invoice description",
+            amount=1000,  # the amount in cents
+            currency="usd",
+        )
+
+        invoice_id = invoice.id
+        stripe.Invoice.send_invoice(invoice_id)
