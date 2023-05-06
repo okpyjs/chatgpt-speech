@@ -6,6 +6,13 @@ class ChatSerializer(serializers.Serializer):
     audio_model = serializers.CharField()
     chat_model = serializers.CharField()
     system_message = serializers.CharField()
+    first_chat = serializers.BooleanField()
+    # age = serializers.IntegerField()
+
+
+class MailVerifySerializer(serializers.Serializer):
+    email = serializers.CharField()
+    code = serializers.CharField()
     # age = serializers.IntegerField()
 
 

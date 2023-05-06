@@ -40,7 +40,7 @@ class GPT:
     def __init__(self, chat_model: str = "gpt-3.5-turbo") -> None:
         self.gpt_model = chat_model
 
-    def turbo35(self, message: list[str]):
+    def send_req(self, message: list[str]):
         completion = openai.ChatCompletion.create(
             model=self.gpt_model, messages=message
         )

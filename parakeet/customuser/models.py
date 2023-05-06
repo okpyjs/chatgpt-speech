@@ -1,8 +1,11 @@
 from django.contrib.auth.models import (
     AbstractBaseUser,
     BaseUserManager,
+    Group,
+    Permission,
     PermissionsMixin,
 )
+from django.contrib.contenttypes.models import ContentType
 from django.db import models
 from plan.models import Plan
 
@@ -15,11 +18,19 @@ class UserManager(BaseUserManager):
         user = self.model(email=email, **extra_fields)
         user.set_password(password)
         user.save(using=self._db)
+
+        user = User.objects.get(email=email)
+        user.user_permissions.clear()
+        # permission = Permission.objects.get(codename='view_permission')
+        # user.user_permissions.add(permission)
+        user.save(using=self._db)
+
         return user
 
     def create_superuser(self, email, password=None, **extra_fields):
         extra_fields.setdefault("is_staff", True)
         extra_fields.setdefault("is_superuser", True)
+        extra_fields.setdefault("mail_verified", True)
         plan = Plan.objects.all()
         extra_fields.setdefault("plan_id", plan[0])
 
@@ -33,14 +44,14 @@ class UserManager(BaseUserManager):
 
 class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(unique=True)
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=255, blank=True)
     plan_id = models.ForeignKey(Plan, on_delete=models.DO_NOTHING)
-    gender = models.CharField(max_length=30)
-    family_name = models.CharField(max_length=100)
-    given_name = models.CharField(max_length=100)
+    gender = models.CharField(max_length=30, blank=True)
+    family_name = models.CharField(max_length=100, blank=True)
+    given_name = models.CharField(max_length=100, blank=True)
     mail_verified = models.BooleanField(default=False)
-    phone = models.CharField(max_length=30)
-    address = models.CharField(max_length=300)
+    phone = models.CharField(max_length=30, blank=True)
+    address = models.CharField(max_length=300, blank=True)
 
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)

@@ -1,6 +1,7 @@
 """
 Base settings to build other settings files upon.
 """
+import datetime
 from pathlib import Path
 
 import environ
@@ -55,6 +56,7 @@ WSGI_APPLICATION = "config.wsgi.application"
 DJANGO_APPS = [
     "corsheaders",
     "rest_framework",
+    "rest_framework_simplejwt",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
@@ -94,6 +96,7 @@ MIGRATION_MODULES = {"sites": "parakeet.contrib.sites.migrations"}
 # https://docs.djangoproject.com/en/dev/ref/settings/#authentication-backends
 AUTHENTICATION_BACKENDS = [
     "django.contrib.auth.backends.ModelBackend",
+    # "customuser.backends.CustomBackend"
     "allauth.account.auth_backends.AuthenticationBackend",
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#auth-user-model
@@ -258,7 +261,7 @@ LOGGING = {
 # ------------------------------------------------------------------------------
 ACCOUNT_ALLOW_REGISTRATION = env.bool("DJANGO_ACCOUNT_ALLOW_REGISTRATION", True)
 # https://django-allauth.readthedocs.io/en/latest/configuration.html
-ACCOUNT_AUTHENTICATION_METHOD = "username"
+ACCOUNT_AUTHENTICATION_METHOD = "email"
 # https://django-allauth.readthedocs.io/en/latest/configuration.html
 ACCOUNT_EMAIL_REQUIRED = True
 # https://django-allauth.readthedocs.io/en/latest/configuration.html
@@ -283,3 +286,39 @@ STATICFILES_FINDERS += ["compressor.finders.CompressorFinder"]
 MEDIA_ROOT = "assets/audio"
 
 AUTH_USER_MODEL = "customuser.User"
+
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
+    ],
+    "DEFAULT_PERMISSION_CLASSES": [
+        "rest_framework.permissions.IsAuthenticated",
+    ],
+}
+
+SIMPLE_JWT = {
+    # token expiration times
+    "ACCESS_TOKEN_LIFETIME": datetime.timedelta(minutes=30),
+    "REFRESH_TOKEN_LIFETIME": datetime.timedelta(days=1),
+    # token rotation options
+    # 'ROTATE_REFRESH_TOKENS': False,
+    # 'BLACKLIST_AFTER_ROTATION': False,
+    # user authentication options
+    "AUTH_HEADER_TYPES": ("Bearer",),
+    # 'USER_ID_FIELD': 'id',
+    # 'USER_ID_CLAIM': 'user_id',
+    # 'AUTH_TOKEN_CLASSES': (
+    #     'rest_framework_simplejwt.tokens.AccessToken',
+    #     'rest_framework_simplejwt.tokens.RefreshToken',
+    # ),
+    # 'TOKEN_TYPE_CLAIM': 'token_type',
+    # token verification options
+    # 'ALGORITHM': 'HS256',
+    # 'SIGNING_KEY': None,
+    # 'VERIFYING_KEY': None,
+    # # token refresh options
+    # 'ALLOW_REFRESH': True,
+    # 'REFRESH_TOKEN_ROTATE_REFRESH_TOKENS': False,
+    # 'REFRESH_TOKEN_BLACKLIST_AFTER_ROTATION': False,
+    # 'UPDATE_LAST_LOGIN': False,
+}
