@@ -211,7 +211,7 @@ class CustomTokenObtainPairView(TokenObtainPairView):
     serializer_class = CustomTokenObtainPairSerializer
 
 
-class StripeInvoce:
+class StripeInvoce(APIView):
     permission_classes = (IsAuthenticated,)
 
     def post(self, request):
