@@ -28,3 +28,7 @@ class LoginSerializer(serializers.Serializer):
 
 class SignSerializer(serializers.Serializer):
     pass
+
+
+class UserInfoSerializer(serializers.Serializer):
+    email = serializers.CharField()

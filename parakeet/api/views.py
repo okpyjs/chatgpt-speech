@@ -19,7 +19,7 @@ from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 
 from .base import Base
-from .serializers import ChatSerializer, MailVerifySerializer
+from .serializers import ChatSerializer, MailVerifySerializer, UserInfoSerializer
 
 # from parakeet.api.authenticate import jwt_authentication_required
 
@@ -232,3 +232,15 @@ class StripeInvoce(APIView):
 
         invoice_id = invoice.id
         stripe.Invoice.send_invoice(invoice_id)
+
+
+class UserInfo(APIView):
+    permission_classes = (IsAuthenticated,)
+
+    def post(self, request):
+        serializer = UserInfoSerializer(data=request.data)
+
+        if serializer.is_valid():
+            return Response({"data": "success"}, status=200)
+        else:
+            return Response(serializer.errors, status=400)
