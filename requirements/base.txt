@@ -19,7 +19,7 @@ django-compressor==4.3.1  # https://github.com/django-compressor/django-compress
 django-redis==5.2.0  # https://github.com/jazzband/django-redis
 djangorestframework==3.14.0
 django-cors-headers==3.14.0
-openai==0.27.4
+openai==0.27.6
 djangorestframework_simplejwt==5.2.2
 google-api-python-client==2.86.0
 stripe==5.4.0
