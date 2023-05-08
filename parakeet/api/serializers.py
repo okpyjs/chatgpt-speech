@@ -32,3 +32,9 @@ class SignSerializer(serializers.Serializer):
 
 class UserInfoSerializer(serializers.Serializer):
     email = serializers.CharField()
+
+
+class ChangeUserInfoSerializer(serializers.Serializer):
+    email = serializers.CharField()
+    username = serializers.CharField()
+    avatar = serializers.CharField()

@@ -10,6 +10,7 @@ urlpatterns = [
     path("mail-verify/", MailVerify.as_view(), name="mail-verify"),
     path("stripe-invoce/", StripeInvoce.as_view(), name="stripe-invoce"),
     path("userinfo/", UserInfo.as_view(), name="userinfo"),
+    path("change-userinfo/", UserInfo.as_view(), name="change-userinfo")
     # path("token/", TokenObtainPairView.as_view(), name="token_obtain_pair"),
     # path("token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
 ]

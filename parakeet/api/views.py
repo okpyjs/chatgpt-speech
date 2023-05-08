@@ -19,7 +19,12 @@ from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 
 from .base import Base
-from .serializers import ChatSerializer, MailVerifySerializer, UserInfoSerializer
+from .serializers import (
+    ChangeUserInfoSerializer,
+    ChatSerializer,
+    MailVerifySerializer,
+    UserInfoSerializer,
+)
 
 # from parakeet.api.authenticate import jwt_authentication_required
 
@@ -241,6 +246,29 @@ class UserInfo(APIView):
         serializer = UserInfoSerializer(data=request.data)
 
         if serializer.is_valid():
-            return Response({"data": "success"}, status=200)
+            email = serializer.validated_data.get("email")
+            users = User.objects.filter(email=email)
+            if users:
+                user_data = {
+                    "id": users[0].id,
+                    "username": users[0].name,
+                    "email": users[0].email,
+                }
+
+            return Response(user_data, status=200)
         else:
-            return Response(serializer.errors, status=400)
+            return Response(serializer.errors, status=401)
+
+
+class ChangeUserInfo(APIView):
+    permission_classes = (IsAuthenticated,)
+
+    def post(self, request):
+        serializer = ChangeUserInfoSerializer(data=request.data)
+
+        if serializer.is_valid():
+            email = serializer.validated_data.get("email")
+            username = serializer.validated_data.get("username")
+
+        else:
+            return Response(serializer.errors, status=401)
