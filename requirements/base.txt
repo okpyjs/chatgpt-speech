@@ -9,7 +9,7 @@ hiredis==2.2.2  # https://github.com/redis/hiredis-py
 
 # Django
 # ------------------------------------------------------------------------------
-django==4.1.8  # pyup: < 4.2  # https://www.djangoproject.com/
+django==4.2.1  # pyup: < 4.2  # https://www.djangoproject.com/
 django-environ==0.10.0  # https://github.com/joke2k/django-environ
 django-model-utils==4.3.1  # https://github.com/jazzband/django-model-utils
 django-allauth==0.54.0  # https://github.com/pennersr/django-allauth
