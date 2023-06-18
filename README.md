@@ -1,6 +1,6 @@
 # parakeet
 
-『パラキート』は音声学習メディアです。音や声で勉強する音声配信。国語.社会.地理.歴史.理科.英語.学校の勉強。統一的に知識を吸収。耳で学習して成績up。通学、通勤途中に耳や声で効率的に学ぶ
+"Parakeet" is a voice learning media. Audio distribution to study with sound and voice. Japanese, social studies, geography, history, science, English, schoolwork. Collect knowledge in a unified way. Learn by ear and improve your grades. Efficient learning by ear and voice while commuting to school or work
 
 [![Built with Cookiecutter Django](https://img.shields.io/badge/built%20with-Cookiecutter%20Django-ff69b4.svg?logo=cookiecutter)](https://github.com/cookiecutter/cookiecutter-django/)
 [![Black code style](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/ambv/black)
